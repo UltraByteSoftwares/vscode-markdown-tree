@@ -1,11 +1,11 @@
 # Markdown Tree extension for Visual Studio Code
 
-This extension enables you to generate expandable/collapsible trees in markdown
+Generate collapsible/expandable trees in markdown
 
 ## Features
 
-- Generate trees from space or tab indented text
-- Also supports generating trees from the output of `tree` command
+- Generate trees from space/tab indented text
+- Supports generating trees from the output of `tree` command
 
 ### Preview
 
@@ -13,7 +13,7 @@ This extension enables you to generate expandable/collapsible trees in markdown
 
 ## Usage
 
-- Create collapsible HTML trees with `ultree` fenced code block
+- Write your tree items inside `ultree` fenced code block
 
     <pre>
     ```ultree
@@ -24,11 +24,10 @@ This extension enables you to generate expandable/collapsible trees in markdown
                 main.js
     ```</pre>
   
-- Indent the tree items with spaces or tabs (but not both simultaneously within one `ultree` block)
-- Pasting the output of `tree` command works as well
-- You can also control the output by specifying the options at the beginning of the `ultree` block in `key: value` format as shown in the image above
+- Use either tabs or spaces to indent (but not both together inside `ultree` block)
 
 ## Options
+Options can be specified as `key: value` pairs at the beginning of the body of `ultree` block.
 
 Here are the currently supported options
 
