@@ -6,8 +6,15 @@
   "icon": "./res/logo.png",
   "publisher": "UltraByteSoftwares",
   "license": "MIT",
+  "keywords": [
+    "tree",
+    "markdown",
+    "ultree",
+    "collapsible",
+    "expandable"
+  ],
   "engines": {
-    "vscode": "^1.92.0"
+    "vscode": "^1.78.2"
   },
   "categories": [
     "Other"
