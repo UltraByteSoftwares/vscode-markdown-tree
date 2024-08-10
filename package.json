@@ -2,7 +2,7 @@
   "name": "markdown-tree",
   "displayName": "Markdown Tree",
   "description": "Generate collapsible trees in markdown",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "icon": "./res/logo.png",
   "publisher": "UltraByteSoftwares",
   "license": "MIT",
