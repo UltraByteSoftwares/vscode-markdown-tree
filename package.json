@@ -4,6 +4,8 @@
   "description": "Create tree-like structure in markdown",
   "version": "0.1.0",
   "icon": "./res/logo.png",
+  "publisher": "UltraByteSoftwares",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.92.0"
   },
