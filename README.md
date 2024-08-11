@@ -2,6 +2,10 @@
 
 Generate collapsible/expandable trees in markdown
 
+## Installation
+
+This extension is available at [Visual Studio Code marketplace](https://marketplace.visualstudio.com/items?itemName=UltraByteSoftwares.markdown-tree) and can also be installed from within VSCode.
+
 ## Features
 
 - Generate trees from space/tab indented text
