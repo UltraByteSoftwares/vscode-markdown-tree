@@ -22,6 +22,20 @@
   "activationEvents": [],
   "main": "./src/extension.js",
   "contributes": {
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "ultree.generateFolderTree",
+          "group": "ultree"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "ultree.generateFolderTree",
+        "title": "Ultree: Generate Folder Tree"
+      }
+    ],
     "markdown.previewStyles": [
       "./style/branched.css"
     ],
