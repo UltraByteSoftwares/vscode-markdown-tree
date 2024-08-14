@@ -2,28 +2,54 @@ const {readdir} = require('fs/promises');
 const path = require('path');
 
 class DirectoryPrinter {
-    async _getChildren(filepath, depth, options) {
+    /**
+     * @param {string} name 
+     * @param {number} depth 
+     * @param {boolean} [lastChild=false] 
+     */
+    _getDecoratedLine(name, depth, lastChild = false) {
+        let line = '';
+        
+        const {end, horizontal, vertical, middle, indentation, emptyStr} = this._options;
+        const padding = `${vertical}${emptyStr.repeat(indentation - vertical.length)}`.repeat(depth - 1);
+
+        const horizRepeat = indentation - `${middle}${emptyStr}`.length;
+        const marker = lastChild ? end : middle;
+        line = `${padding}${marker}${horizontal.repeat(horizRepeat)} ${name}`;
+
+        return line;
+    }
+
+    /**
+     * 
+     * @param {string} filepath 
+     * @param {number} depth 
+     */
+    async _getChildren(filepath, depth) {
         try {
+            if (depth > this._options['maxlevel'])
+                return;
+
             const contents = await readdir(filepath, {recursive: true, withFileTypes: true});
     
-            let children = '';
-            for (const content of contents) {
+            for (let i = 0; i < contents.length; ++i) {
+                const content = contents[i];
+
                 // If exclusion is present
-                if (options.exclude) {
-                    if (content.name.search(options.exclude) !== -1)
+                if (this._options.exclude) {
+                    if (content.name.search(this._options.exclude) !== -1)
                         continue;
                 }
     
-                // If it is not a directory, simply get the item name.
-                // If it is a directory, get the item name (of course) and its children
-                children += `${' '.repeat(4*depth)}${content.name}\n`;
-
+                // index = lines.length does not exist but will exist after pushing into it
+                const line = this._getDecoratedLine(content.name, depth, i == contents.length - 1 ? true: false);
+                // Simply get the item name
+                this._lines.push(line);
+                
+                // Now get the children
                 if (content.isDirectory())
-                    children += await this._getChildren(path.join(filepath, content.name), depth + 1, options)
-                    
+                    await this._getChildren(path.join(filepath, content.name), depth + 1);
             }
-
-            return children;
           } catch (err) {
             console.error(err);
           }    
@@ -35,27 +61,36 @@ class DirectoryPrinter {
      * @param {Object} opts 
      */
     async print(filepath, opts) {
+        this._lines = [];
+        
         // reset the options
-        const options = {
+        this._options = {
             offset : 0,
             exclude : null,
-            level : null,
+            maxlevel : null,   /* max level of recursion */
             end : '└',
             middle : '├',
             horizontal : '─',
-            vertical : '│'
+            vertical : '│',
+            emptyStr : ' ',
+            indentation : 4
         }
 
-        Object.assign(options, opts);
-        let output = `${path.basename(filepath)}\n`;
-        output += await this._getChildren(filepath, 1, options);
+        Object.assign(this._options, opts);
+        this._lines.push(`${path.basename(filepath)}`);
 
-        return output;
+        try {
+            await this._getChildren(filepath, 1, this._lines);
+        } catch (err) {
+            console.error(err);
+        }
+
+        return this._lines.join('\n');
     }
 }
 
 const dir = new DirectoryPrinter();
-dir.print('./', {exclude: /(^\.|node_modules)/})
+dir.print('./', {exclude: /(^\.|node_modules)/, maxlevel: 1})
 .then(res => {
     console.log(res);
 });
