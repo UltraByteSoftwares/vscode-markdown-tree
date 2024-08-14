@@ -27,7 +27,7 @@ class DirectoryPrinter {
      */
     async _getChildren(filepath, depth) {
         try {
-            if (depth > this._options['maxlevel'])
+            if (this._options.maxlevel && depth > this._options.maxlevel)
                 return;
 
             const contents = await readdir(filepath, {withFileTypes: true});
@@ -42,7 +42,7 @@ class DirectoryPrinter {
                 }
     
                 // index = lines.length does not exist but will exist after pushing into it
-                const line = this._getDecoratedLine(content.name, depth, i == contents.length - 1 ? true: false);
+                const line = this._getDecoratedLine(content.name, depth, i === contents.length - 1 ? true: false);
                 // Simply get the item name
                 this._lines.push(line);
                 
