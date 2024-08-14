@@ -6,7 +6,15 @@ const vscode = require('vscode');
  * @returns {void}
  */
 function generateFolderTreeHandler(uri) {
-	console.log(uri)
+	
+	// print the tree at the cursor
+	const editor = vscode.window.activeTextEditor;
+	if (editor && editor.selection.isEmpty) {
+		const position = editor.selection.active;
+		editor.edit(edit => {
+			edit.replace(position, uri.path);
+		});
+	}
 }
 
 // This method is called when your extension is activated
