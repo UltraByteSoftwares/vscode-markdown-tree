@@ -10,12 +10,12 @@ class DirectoryPrinter {
     _getDecoratedLine(name, depth, lastChild = false) {
         let line = '';
         
-        const {end, horizontal, vertical, middle, indentation, emptyStr} = this._options;
+        const {end, horizontal, vertical, middle, indentation, emptyStr, offset} = this._options;
         const padding = `${vertical}${emptyStr.repeat(indentation - vertical.length)}`.repeat(depth - 1);
 
         const horizRepeat = indentation - `${middle}${emptyStr}`.length;
         const marker = lastChild ? end : middle;
-        line = `${padding}${marker}${horizontal.repeat(horizRepeat)} ${name}`;
+        line = `${emptyStr.repeat(offset)}${padding}${marker}${horizontal.repeat(horizRepeat)} ${name}`;
 
         return line;
     }
@@ -30,7 +30,7 @@ class DirectoryPrinter {
             if (depth > this._options['maxlevel'])
                 return;
 
-            const contents = await readdir(filepath, {recursive: true, withFileTypes: true});
+            const contents = await readdir(filepath, {withFileTypes: true});
     
             for (let i = 0; i < contents.length; ++i) {
                 const content = contents[i];
@@ -77,7 +77,12 @@ class DirectoryPrinter {
         }
 
         Object.assign(this._options, opts);
-        this._lines.push(`${path.basename(filepath)}`);
+        const {emptyStr, offset, indentation} = this._options;
+
+        // 2 is the minimum indentation allowed
+        this._options.indentation = indentation < 2 ? 2 : indentation;
+
+        this._lines.push(`${emptyStr.repeat(offset)}${path.basename(filepath)}`);
 
         try {
             await this._getChildren(filepath, 1, this._lines);
@@ -90,7 +95,12 @@ class DirectoryPrinter {
 }
 
 const dir = new DirectoryPrinter();
-dir.print('./', {exclude: /(^\.|node_modules)/, maxlevel: 1})
+dir.print('./', {
+    exclude: /(^\.|node_modules)/, 
+    maxlevel: 4, 
+    offset: 4,
+    indentation: 4
+})
 .then(res => {
     console.log(res);
 });
