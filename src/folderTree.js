@@ -10,11 +10,11 @@ class DirectoryPrinter {
     _getDecoratedLine(name, depth, lastChild = false) {
         let line = '';
         
-        const {end, horizontal, vertical, middle, indentation, emptyStr, offset} = this._options;
+        const {last, horizontal, vertical, middle, indentation, emptyStr, offset} = this._options;
         const padding = `${vertical}${emptyStr.repeat(indentation - vertical.length)}`.repeat(depth - 1);
 
         const horizRepeat = indentation - `${middle}${emptyStr}`.length;
-        const marker = lastChild ? end : middle;
+        const marker = lastChild ? last : middle;
         line = `${emptyStr.repeat(offset)}${padding}${marker}${horizontal.repeat(horizRepeat)} ${name}`;
 
         return line;
@@ -68,7 +68,7 @@ class DirectoryPrinter {
             offset : 0,
             exclude : null,
             maxlevel : null,   /* max level of recursion */
-            end : '└',
+            last : '└',
             middle : '├',
             horizontal : '─',
             vertical : '│',
