@@ -15,7 +15,7 @@ async function printFolderTree(uri) {
         if (editor && editor.selection.isEmpty) {
 			const position = editor.selection.active;
             const offset = position.character;
-			const output = await dirPrinter.print(uri.fsPath, {exclude: /(^\.|node_modules)/, offset: offset});
+			const output = await dirPrinter.print(uri.fsPath, {offset: offset});
 			
             editor.edit(edit => {
                 edit.replace(position, output);
