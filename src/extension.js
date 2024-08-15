@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const DirectoryPrinter = require('./folderTree.js');
+const DirectoryPrinter = require('./directory-printer.js');
 
 /**
  * Will create the tree and print at the active editor cursor
