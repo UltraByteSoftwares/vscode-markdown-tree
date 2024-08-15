@@ -3,10 +3,10 @@ const DirectoryPrinter = require('./directory-printer.js');
 
 /**
  * Will create the tree and print at the active editor cursor
- * @param {Object} path 
+ * @param {string} folderpath 
  * @returns {void}
  */
-async function printFolderTree(uri) {
+async function printFolderTree(folderpath) {
     try {
         const dirPrinter = new DirectoryPrinter();
 		
@@ -15,7 +15,7 @@ async function printFolderTree(uri) {
         if (editor && editor.selection.isEmpty) {
 			const position = editor.selection.active;
             const offset = position.character;
-			const output = await dirPrinter.print(uri.fsPath, {offset: offset});
+			const output = await dirPrinter.print(folderpath, {offset: offset});
 			
             editor.edit(edit => {
                 edit.replace(position, output);
@@ -35,9 +35,11 @@ async function printFolderTree(uri) {
  * @returns 
  */
 function activate(context) {
-    const generateFolderTree = 'ultree.generateFolderTree';
-
-    context.subscriptions.push(vscode.commands.registerCommand(generateFolderTree, printFolderTree));
+    // This command will come from r-click on explorer
+    const generateFolderTreeFromSelection = 'ultree.generateFolderTreeFromSelection';
+    context.subscriptions.push(vscode.commands.registerCommand(generateFolderTreeFromSelection, async (uri) => {
+        printFolderTree(uri.fsPath)
+    }));
 
     return {
         extendMarkdownIt(md) {
