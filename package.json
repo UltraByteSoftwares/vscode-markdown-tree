@@ -23,6 +23,12 @@
   "main": "./src/extension.js",
   "contributes": {
     "menus": {
+      "commandPalette": [
+        {
+          "command": "ultree.generateFolderTreeFromSelection",
+          "when": "false"
+        }
+      ],
       "explorer/context": [
         {
           "command": "ultree.generateFolderTreeFromSelection",
@@ -34,6 +40,10 @@
       {
         "command": "ultree.generateFolderTreeFromSelection",
         "title": "Ultree: Generate Folder Tree"
+      },
+      {
+        "command": "ultree.generateFolderTree",
+        "title": "Ultree: Generate Tree From Path"
       }
     ],
     "markdown.previewStyles": [

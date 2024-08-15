@@ -41,6 +41,16 @@ function activate(context) {
         printFolderTree(uri.fsPath)
     }));
 
+    // Command from command palette
+    const generateFolderTree = 'ultree.generateFolderTree';
+    context.subscriptions.push(vscode.commands.registerCommand(generateFolderTree, async () => {
+        // ask for user input
+        const folderpath = await vscode.window.showInputBox();
+
+        // send the user input
+        printFolderTree(folderpath)
+    }));
+
     return {
         extendMarkdownIt(md) {
               return md.use(require('markdown-it-ultree'));

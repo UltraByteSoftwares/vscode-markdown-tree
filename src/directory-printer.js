@@ -1,4 +1,4 @@
-const {readdir} = require('fs/promises');
+const {readdir, access} = require('fs/promises');
 const path = require('path');
 
 class DirectoryPrinter {
@@ -47,7 +47,7 @@ class DirectoryPrinter {
      * @param {number} depth 
      */
     async _getChildren(filepath, depth) {
-        try {
+        try {                
             if (this._options.maxlevel && depth > this._options.maxlevel)
                 return;
 
@@ -81,9 +81,9 @@ class DirectoryPrinter {
                 if (content.isDirectory())
                     await this._getChildren(path.join(filepath, content.name), depth + 1);
             }
-          } catch (err) {
+        } catch (err) {
             console.error(err);
-          }    
+        }    
     }
 
     /**
@@ -92,6 +92,11 @@ class DirectoryPrinter {
      * @param {Object} opts 
      */
     async print(filepath, opts) {
+        if (!filepath)
+            throw new Error("Supplied folder path is undefined");
+
+        await access(filepath);
+
         this._lines = [];
         
         // reset the options
@@ -114,13 +119,8 @@ class DirectoryPrinter {
         this._options.indentation = indentation < 2 ? 2 : indentation;
 
         this._lines.push(`${path.basename(filepath)}`);
-
-        try {
-            await this._getChildren(filepath, 1, this._lines);
-        } catch (err) {
-            console.error(err);
-        }
-
+    
+        await this._getChildren(filepath, 1, this._lines);
         return this._lines.join('\n');
     }
 }
