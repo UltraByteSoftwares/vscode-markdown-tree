@@ -22,6 +22,11 @@ async function printFolderTree(folderpath) {
             });
         }
     } catch (err) {
+        // If it is an Error with 'Error:' in message, show the error
+        if (err.message.search('Error:') !== -1) {
+            await vscode.window.showErrorMessage(err.message);
+        }
+
         console.error(err);
     }
 }

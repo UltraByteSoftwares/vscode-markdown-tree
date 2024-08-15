@@ -95,7 +95,11 @@ class DirectoryPrinter {
         if (!filepath)
             throw new Error("Supplied folder path is undefined");
 
-        await access(filepath);
+        try {
+            await access(filepath);
+        } catch (error) {
+            throw new Error(`Error: Folder "${filepath}" does not exist or is not accessible`);
+        }
 
         this._lines = [];
         
