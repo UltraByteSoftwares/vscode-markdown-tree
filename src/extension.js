@@ -8,14 +8,13 @@ const DirectoryPrinter = require('./directory-printer.js');
  */
 async function printFolderTree(folderpath) {
     try {
-        const dirPrinter = new DirectoryPrinter();
+        const dirPrinter = DirectoryPrinter.getInstance();
 		
         // print the tree at the cursor
         const editor = vscode.window.activeTextEditor;
         if (editor && editor.selection.isEmpty) {
 			const position = editor.selection.active;
-            const offset = position.character;
-			const output = await dirPrinter.print(folderpath, {offset: offset});
+			const output = await dirPrinter.print(folderpath);
 			
             editor.edit(edit => {
                 edit.replace(position, output);
