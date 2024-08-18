@@ -80,8 +80,44 @@ class DepthStack {
 }
 
 class TreeDecorator {
+    /**
+     * Modifies the supplied lines array
+     * @param {number} pos The actual character position (not depth) in the string
+     * @param {string[]} lines 
+     * @param {number} start 
+     * @param {number} end 
+     * @param {string} charStr 
+     */
+    static insertAtPosition(pos, lines, start, end, charStr) {
+        if (end > lines.length)
+            throw new Error(`Value of end (${end}) > lines.length (${lines.length})`);
+
+        for (let i = start; i < end; ++i) {
+            const line = lines[i];
+
+            if (pos > line.length)
+                throw new Error(`String length (${line.length}) < ${pos}`);
+
+            const p1 = line.substring(0, pos);
+            const p2 = line.substring(pos + charStr.length);
+
+            lines[i] = p1 + charStr + p2;
+        }
+    }
+
     constructor() {
-        this._options = {};
+        this._options = {
+            offset : 0,
+            exclude : null,
+            maxlevel : null,   /* max level of recursion */
+            last : '└',
+            middle : '├',
+            horizontal : '─',
+            vertical : '│',
+            emptyStr : ' ',
+            indentation : 4,
+            hclearance: 1
+        }
     }
 
     /**
@@ -120,12 +156,11 @@ class TreeDecorator {
             Object.assign(opts, options);
 
         // Return if nothing or empty
-        const result = [];
+        const result = [...lines];
         if (!lines || !lines.length)
             return result;
         
         const offset = this._getPadding(lines[0]);
-        result.push(lines[0]);
 
         // If it is the only item, return
         if (lines.length < 2)
@@ -146,22 +181,38 @@ class TreeDecorator {
 
         for (let i = 1; i < lines.length; ++i) {
             const line = lines[i];
-            const depth = this._getDepth(line, indentation);
+            const depth = this._getDepth(line, indentation, offset);
+
+            // get the sibling if any
+            const siblingLineNum = dstack.get(depth);
 
             // push itself makes sure the difference in depth is not greater than 1
             if (!dstack.push(i, depth))
                 return result;
 
-            // If difference in lineNums > 1, then make a vertical line
-            const parentLineNum = dstack.get(depth - 1);
-            if (!parentLineNum)
+            try {
+                const {middle, horizontal, hclearance, vertical, last} = this._options;
+                const pos = (depth - 1) * indentation;
+
+                if (siblingLineNum !== null) {
+                    // Print the vertical branch lines from line after sibling to the current line
+                    TreeDecorator.insertAtPosition(pos, result, siblingLineNum + 1, i, vertical);
+                }
+
+                let marker = middle;
+                // Check if it is the last child, if yes, marker will be different
+                // This item in the current line is the last child if it is the last item in the list
+                // or the depth of next line is less than the current one
+                if (i === lines.length - 1 || this._getDepth(lines[i + 1], indentation, offset) < depth)
+                    marker = last;
+
+                // Print the marker and the item
+                const horizRepeat = indentation - marker.length - hclearance;
+                TreeDecorator.insertAtPosition(pos, result, i, i + 1, 
+                    `${marker}${horizontal.repeat(horizRepeat)}`);
+            } catch (err) {
                 return result;
-
-            if (i - parentLineNum > 1) {
-                // @TODO code to print vertical lines
             }
-
-            // @TODO Code to print simple marker and the item
         }
 
         return result;
@@ -169,20 +220,3 @@ class TreeDecorator {
 }
 
 module.exports = TreeDecorator;
-
-// const res = new TreeDecorator().decorate(['lop']);
-// console.log(res);
-
-const ds = new DepthStack();
-ds.push(70);
-ds.push(78);
-ds.push(76);
-ds.push(75);
-ds.push(79);
-console.log(ds);
-
-// console.log(ds.pop(3));
-// console.log(ds);
-
-console.log(ds.replace(69, 2))
-console.log(ds);

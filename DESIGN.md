@@ -15,7 +15,7 @@ flowchart TB
     DirectoryPrinter -- folder path --> FastGlobExplorer
     DirectoryPrinter -. folder path .-> recx(RecursiveExplorer) 
 
-    FastGlobExplorer -- file string[] --> FlatTreePrinter
+    FastGlobExplorer -- flat file list --> FlatTreePrinter
     FlatTreePrinter -- indented string[] --> TreeDecorator
 
     recx -. JS Objects .-> retp(RecursiveTreePrinter)

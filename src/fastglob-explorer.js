@@ -1,5 +1,6 @@
 // Uses the fast-glob package from npm
 const fg = require('fast-glob');
+const path = require('path');
 
 class FastGlobExplorer {
     /**
@@ -12,22 +13,17 @@ class FastGlobExplorer {
      */
     async getFiles(folderpath, options = null) {
         const opts = {
-            cwd: folderpath,
+            cwd: path.dirname(folderpath),
             onlyFiles: false
         };
     
         if (options)
             Object.assign(opts, options);
     
-        const files = await fg('**', opts);
+        const files = await fg.async(`${path.basename(folderpath)}/**`, opts);
     
         return files.sort();
     }
 }
 
 module.exports = FastGlobExplorer;
-
-new FastGlobExplorer().getFiles('./', {ignore: ['node_modules']})
-    .then(res => {
-        console.log(res);
-    });

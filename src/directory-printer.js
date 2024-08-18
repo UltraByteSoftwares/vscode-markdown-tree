@@ -24,7 +24,8 @@ class DirectoryPrinter {
 
         // Set the default options
         this._options = {
-            offset: 4
+            offset: 0,
+            indentation: 4
         }
     }
 
@@ -45,18 +46,19 @@ class DirectoryPrinter {
         const files = await this._explorer.getFiles(folderpath);
 
         // Create indented list from the above flat list
-        const indented = this._printer.print(files, {offset: opts.indentation});
+        const baseName = path.basename(folderpath);
+        files.unshift(baseName);
+        const indented = this._printer.print(files);
 
         /* Since, the decorator below needs an indented tree with only one 
         root and the output we got above doesn't have the root folder, we need to add
         the root element ourselves and then send it to the decorator */
-        const baseName = path.basename(folderpath);
 
         // Decorate them with branch lines
-        const list = this._decorator.decorate([baseName, ...indented]);
+        const list = this._decorator.decorate(indented);
 
         // Return the output
-        return list.join('\n');
+        return list.join(`\n${' '.repeat(opts.offset)}`);
     }
 }
 

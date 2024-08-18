@@ -14,7 +14,9 @@ async function printFolderTree(folderpath) {
         const editor = vscode.window.activeTextEditor;
         if (editor && editor.selection.isEmpty) {
 			const position = editor.selection.active;
-			const output = await dirPrinter.print(folderpath);
+            const offset = position.character;
+
+			const output = await dirPrinter.print(folderpath, {offset: offset});
 			
             editor.edit(edit => {
                 edit.replace(position, output);

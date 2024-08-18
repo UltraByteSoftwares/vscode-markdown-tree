@@ -6,8 +6,7 @@ class FlatTreePrinter {
     constructor() {
         this._options = {
             separator: '/',
-            indentation: 4,
-            offset: 0
+            indentation: 4
         }
     }
 
@@ -23,7 +22,7 @@ class FlatTreePrinter {
     /**
      * 
      * @param {string[]} items Array of strings must be sorted
-     * @param {{separator?: string, indentation?: number, offset?: number}} options
+     * @param {{separator?: string, indentation?: number}} options
      * @param {CallableFunction} formatter 
      * @returns {string[]} 
      */
@@ -44,7 +43,7 @@ class FlatTreePrinter {
             const list = item.split(opts.separator).filter(e => e.trim() !== '')
 
             // e.g. for say src/file.js, there should be only one unit indent
-            const totalIndent = (list.length - 1) * opts.indentation + opts.offset;
+            const totalIndent = (list.length - 1) * opts.indentation;
 
             lines.push(`${' '.repeat(totalIndent)}${format(list[list.length - 1])}`);
         }
