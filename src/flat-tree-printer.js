@@ -38,15 +38,21 @@ class FlatTreePrinter {
             format = formatter;
         
         for (let i = 0; i < files.length; ++i) {
-            const file = files[i];
-
             // Split at separator, say '/' for files
-            const list = file.split(separator).filter(e => e.trim() !== '')
+            const list = files[i].split(separator);
+
+            let slash = '';
+            let len = list.length;
+
+            if (list[list.length - 1].trim() === '') {
+                slash = '/'
+                len = list.length - 1;
+            }
 
             // e.g. for say src/file.js, there should be only one unit indent
-            const totalIndent = (list.length - 1) * indentation;
+            const totalIndent = (len - 1) * indentation;
 
-            files[i] = `${' '.repeat(totalIndent)}${format(list[list.length - 1])}`;
+            files[i] = `${' '.repeat(totalIndent)}${format(list[len - 1])}${slash}`;
         }
 
         return files;
