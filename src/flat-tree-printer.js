@@ -1,10 +1,12 @@
+const OptionsManager = require('./options-manager.js');
+
 /**
  * Class meant to turn a sorted "flat" file/folder list to
  * an "indented" folder list
  */
 class FlatTreePrinter {
-    constructor() {
-        this._options = {
+    getDefaultOptions() {
+        return {
             separator: '/',
             indentation: 4
         }
@@ -28,12 +30,9 @@ class FlatTreePrinter {
      * @returns {string[]} 
      */
     print(files, options = null, formatter = null) {
-        // Copy the default options
-        let opts = {...this._options};
+        const {separator, indentation} =
+            OptionsManager.copyOptions(this.getDefaultOptions(), options);
 
-        if (options)
-            Object.assign(opts, options);
-        
         let format = (item) => item;
         if (formatter)
             format = formatter;
@@ -42,10 +41,10 @@ class FlatTreePrinter {
             const file = files[i];
 
             // Split at separator, say '/' for files
-            const list = file.split(opts.separator).filter(e => e.trim() !== '')
+            const list = file.split(separator).filter(e => e.trim() !== '')
 
             // e.g. for say src/file.js, there should be only one unit indent
-            const totalIndent = (list.length - 1) * opts.indentation;
+            const totalIndent = (list.length - 1) * indentation;
 
             files[i] = `${' '.repeat(totalIndent)}${format(list[list.length - 1])}`;
         }

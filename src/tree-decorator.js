@@ -114,7 +114,6 @@ class TreeDecorator {
             hline : '─',
             vline : '│',
             empty : ' ',
-            indentation : 4,
             hgap: 1
         }
     }
