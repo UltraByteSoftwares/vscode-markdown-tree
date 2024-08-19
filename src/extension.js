@@ -16,10 +16,10 @@ async function printFolderTree(folderpath) {
 			const position = editor.selection.active;
             const offset = position.character;
 
-			const output = await dirPrinter.print(folderpath, {offset: offset});
+			const output = await dirPrinter.print(folderpath);
 			
             editor.edit(edit => {
-                edit.replace(position, output);
+                edit.replace(position, output.join(`\n${' '.repeat(offset)}`));
             });
         }
     } catch (err) {

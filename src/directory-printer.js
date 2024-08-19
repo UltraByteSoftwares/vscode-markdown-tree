@@ -1,6 +1,7 @@
 const FastGlobExplorer = require('./fastglob-explorer.js');
 const FlatTreePrinter = require('./flat-tree-printer.js');
 const TreeDecorator = require('./tree-decorator.js');
+const OptionsManager = require('./options-manager.js');
 
 class DirectoryPrinter {
     static s_instance = null;
@@ -20,27 +21,15 @@ class DirectoryPrinter {
         this._explorer = new FastGlobExplorer();
         this._printer = new FlatTreePrinter();
         this._decorator = new TreeDecorator();
-
-        // Set the default options
-        this._options = {
-            offset: 0,
-            indentation: 4
-        }
+        this._optionsMgr = new OptionsManager();
     }
 
     /**
-     * 
+     * @async
      * @param {string} folderpath 
-     * @param {Object} [options=null] 
-     * @returns {string}
+     * @returns {string[]}
      */
-    async print(folderpath, options = null) {
-        // Copy the default options
-        let opts = {...this._options};
-
-        if (options)
-            Object.assign(opts, options);
-
+    async print(folderpath) {
         // Get the files in a flat list
         const files = await this._explorer.getFiles(folderpath);
 
@@ -51,7 +40,7 @@ class DirectoryPrinter {
         const list = this._decorator.decorate(indented);
 
         // Return the output
-        return list.join(`\n${' '.repeat(opts.offset)}`);
+        return list;
     }
 }
 

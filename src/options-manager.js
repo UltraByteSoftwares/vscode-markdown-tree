@@ -15,6 +15,9 @@ class OptionsManager {
      * @param {Object} source 
      */
     static copyOptions(target, source) {
+        if (!source)
+            return target;
+
         for (let key in target) {
             if (key in source)
                 Object.assign(target, source);
