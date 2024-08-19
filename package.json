@@ -54,7 +54,7 @@
         "markdown-ultree.folders.trailingSlash" : {
           "type": "boolean",
           "default": false,
-          "description": "Show trailing slashes (/) for folders"
+          "description": "Show trailing slashes (/) for folders."
         }
       }
     },
