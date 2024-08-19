@@ -20,9 +20,12 @@ class FastGlobExplorer {
         if (options)
             Object.assign(opts, options);
     
-        const files = await fg.async(`${path.basename(folderpath)}/**`, opts);
-    
-        return files.sort();
+        const baseName = path.basename(folderpath);
+        const files = await fg.async(`${baseName}/**`, opts);
+        files.sort();
+        files.unshift(baseName);
+        
+        return files;
     }
 }
 

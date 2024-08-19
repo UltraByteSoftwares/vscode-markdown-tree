@@ -20,13 +20,14 @@ class FlatTreePrinter {
     }
 
     /**
-     * 
-     * @param {string[]} items Array of strings must be sorted
+     * An indented files/folder list is generated from the supplied flat files list.
+     * The original files array is mutated and also returned
+     * @param {string[]} files Array of strings must be sorted
      * @param {{separator?: string, indentation?: number}} options
      * @param {CallableFunction} formatter 
      * @returns {string[]} 
      */
-    print(items, options = null, formatter = null) {
+    print(files, options = null, formatter = null) {
         // Copy the default options
         let opts = {...this._options};
 
@@ -37,18 +38,19 @@ class FlatTreePrinter {
         if (formatter)
             format = formatter;
         
-        const lines = [];
-        for (let item of items) {
+        for (let i = 0; i < files.length; ++i) {
+            const file = files[i];
+
             // Split at separator, say '/' for files
-            const list = item.split(opts.separator).filter(e => e.trim() !== '')
+            const list = file.split(opts.separator).filter(e => e.trim() !== '')
 
             // e.g. for say src/file.js, there should be only one unit indent
             const totalIndent = (list.length - 1) * opts.indentation;
 
-            lines.push(`${' '.repeat(totalIndent)}${format(list[list.length - 1])}`);
+            files[i] = `${' '.repeat(totalIndent)}${format(list[list.length - 1])}`;
         }
 
-        return lines;
+        return files;
     }
 }
 

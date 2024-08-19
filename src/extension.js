@@ -41,10 +41,14 @@ async function printFolderTree(folderpath) {
  * @returns 
  */
 function activate(context) {
+    const config = vscode.workspace.getConfiguration('markdown-ultree');
+    
     // This command will come from r-click on explorer
     const generateFolderTreeFromSelection = 'ultree.generateFolderTreeFromSelection';
     context.subscriptions.push(vscode.commands.registerCommand(generateFolderTreeFromSelection, async (uri) => {
-        printFolderTree(uri.fsPath)
+        await printFolderTree(uri.fsPath);
+        console.log(config);
+        console.log(config.get("folders.ignore"));
     }));
 
     // Command from command palette
