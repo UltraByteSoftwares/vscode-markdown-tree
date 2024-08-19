@@ -22,6 +22,42 @@
   "activationEvents": [],
   "main": "./src/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Markdown ULTree",
+      "properties": {
+        "markdown-ultree.folders.ignore" : {
+          "type": "string",
+          "default": ".*",
+          "markdownDescription": "Files/folders to ignore based on patterns. Use semicolon to separate patterns e.g. `.git; node_modules;*test`."
+        },
+        "markdown-ultree.folders.indentation" : {
+          "type": "number",
+          "default": 4,
+          "description": "Indentation to depict each level in the directory."
+        },
+        "markdown-ultree.folders.branchlines" : {
+          "type": "string",
+          "default": "├─",
+          "enum": ["├─", "None"],
+          "description": "Marker style for each item in the tree"
+        },
+        "markdown-ultree.folders.recursive" : {
+          "type": "boolean",
+          "default": true,
+          "description": "Scan directories recursively."
+        },
+        "markdown-ultree.folders.maximumDepth" : {
+          "type": "number",
+          "default": -1,
+          "description": "Max depth/level of directories for recursive scan. -1 means no limit."
+        },
+        "markdown-ultree.folders.trailingSlash" : {
+          "type": "boolean",
+          "default": false,
+          "description": "Show trailing slashes (/) for folders"
+        }
+      }
+    },
     "menus": {
       "commandPalette": [
         {
