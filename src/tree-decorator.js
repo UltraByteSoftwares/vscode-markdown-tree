@@ -107,9 +107,6 @@ class TreeDecorator {
 
     constructor() {
         this._options = {
-            offset : 0,
-            exclude : null,
-            maxlevel : null,   /* max level of recursion */
             last : '└',
             middle : '├',
             horizontal : '─',
@@ -135,7 +132,6 @@ class TreeDecorator {
      * Get the depth level of a string in a tree list
      * @param {string} str 
      * @param {number} indentation number of spaces in one indentation
-     * @param {number} offset  
      * @returns {number}
      */
     _getDepth(str, indentation, offset) {
@@ -156,15 +152,14 @@ class TreeDecorator {
             Object.assign(opts, options);
 
         // Return if nothing or empty
-        const result = [...lines];
         if (!lines || !lines.length)
-            return result;
+            return lines;
         
         const offset = this._getPadding(lines[0]);
 
         // If it is the only item, return
         if (lines.length < 2)
-            return result;
+            return lines;
 
         const indentation = this._getPadding(lines[1]) - offset;
 
@@ -173,7 +168,7 @@ class TreeDecorator {
 
         // Difference in depth between first and second elements must be only 1 
         if (diff !== 1)
-            return result;
+            return lines;
 
         /* Depth stack is a stack which keeps track of parents at any time */
         const dstack = new DepthStack();
@@ -188,7 +183,7 @@ class TreeDecorator {
 
             // push itself makes sure the difference in depth is not greater than 1
             if (!dstack.push(i, depth))
-                return result;
+                return lines;
 
             try {
                 const {middle, horizontal, hclearance, vertical, last} = this._options;
@@ -196,7 +191,7 @@ class TreeDecorator {
 
                 if (siblingLineNum !== null) {
                     // Print the vertical branch lines from line after sibling to the current line
-                    TreeDecorator.insertAtPosition(pos, result, siblingLineNum + 1, i, vertical);
+                    TreeDecorator.insertAtPosition(pos, lines, siblingLineNum + 1, i, vertical);
                 }
 
                 let marker = middle;
@@ -208,14 +203,14 @@ class TreeDecorator {
 
                 // Print the marker and the item
                 const horizRepeat = indentation - marker.length - hclearance;
-                TreeDecorator.insertAtPosition(pos, result, i, i + 1, 
+                TreeDecorator.insertAtPosition(pos, lines, i, i + 1, 
                     `${marker}${horizontal.repeat(horizRepeat)}`);
             } catch (err) {
-                return result;
+                return lines;
             }
         }
 
-        return result;
+        return lines;
     }
 }
 
