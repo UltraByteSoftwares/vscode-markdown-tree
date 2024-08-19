@@ -1,3 +1,5 @@
+const OptionsManager = require('./options-manager.js');
+
 /**
  * This is a class on top of array but where the items are not
  * really popped but only the top position changes
@@ -105,15 +107,15 @@ class TreeDecorator {
         }
     }
 
-    constructor() {
-        this._options = {
-            last : '└',
-            middle : '├',
-            horizontal : '─',
-            vertical : '│',
-            emptyStr : ' ',
+    getDefaultOptions() {
+        return {
+            endmark : '└',
+            midmark : '├',
+            hline : '─',
+            vline : '│',
+            empty : ' ',
             indentation : 4,
-            hclearance: 1
+            hgap: 1
         }
     }
 
@@ -140,42 +142,28 @@ class TreeDecorator {
     }
 
     /**
-     * Decorates a tree with branch lines. The tree must have only one root.
+     * Decorates a tree with branch lines. The same passed in array 
+     * is mutated and returned.
      * @param {string[]} lines 
      * @param {*} [options=null] 
      * @returns {string[]} decorated string array
      */
     decorate(lines, options = null) {
-        // Copy the default options
-        let opts = {...this._options};
-        if (options)
-            Object.assign(opts, options);
-
-        // Return if nothing or empty
-        if (!lines || !lines.length)
+        if (!lines || lines.length < 2)
             return lines;
+
+        const {midmark, hline, hgap, vline, endmark} =
+            OptionsManager.copyOptions(this.getDefaultOptions(), options);
         
         const offset = this._getPadding(lines[0]);
-
-        // If it is the only item, return
-        if (lines.length < 2)
-            return lines;
-
         const indentation = this._getPadding(lines[1]) - offset;
 
-        let diff = this._getDepth(lines[1], indentation, offset) -
-                    this._getDepth(lines[0], indentation, offset);
-
-        // Difference in depth between first and second elements must be only 1 
-        if (diff !== 1)
-            return lines;
-
-        /* Depth stack is a stack which keeps track of parents at any time */
         const dstack = new DepthStack();
         dstack.push(0);
 
         for (let i = 1; i < lines.length; ++i) {
             const line = lines[i];
+
             const depth = this._getDepth(line, indentation, offset);
 
             // get the sibling if any
@@ -183,31 +171,26 @@ class TreeDecorator {
 
             // push itself makes sure the difference in depth is not greater than 1
             if (!dstack.push(i, depth))
-                return lines;
+                throw new Error(`Error: Bad indentation at item number ${i + 1} of the tree.`);
 
-            try {
-                const {middle, horizontal, hclearance, vertical, last} = this._options;
-                const pos = (depth - 1) * indentation;
+            const pos = (depth - 1) * indentation;
 
-                if (siblingLineNum !== null) {
-                    // Print the vertical branch lines from line after sibling to the current line
-                    TreeDecorator.insertAtPosition(pos, lines, siblingLineNum + 1, i, vertical);
-                }
-
-                let marker = middle;
-                // Check if it is the last child, if yes, marker will be different
-                // This item in the current line is the last child if it is the last item in the list
-                // or the depth of next line is less than the current one
-                if (i === lines.length - 1 || this._getDepth(lines[i + 1], indentation, offset) < depth)
-                    marker = last;
-
-                // Print the marker and the item
-                const horizRepeat = indentation - marker.length - hclearance;
-                TreeDecorator.insertAtPosition(pos, lines, i, i + 1, 
-                    `${marker}${horizontal.repeat(horizRepeat)}`);
-            } catch (err) {
-                return lines;
+            if (siblingLineNum !== null) {
+                // If there was a previous sibling, print a vertical line to the current line
+                TreeDecorator.insertAtPosition(pos, lines, siblingLineNum + 1, i, vline);
             }
+
+            let marker = midmark;
+            // Check if it is the last child, if yes, marker will be different
+            // This item in the current line is the last child if it is the very last item in the list
+            // or the depth of next line is less than the current one
+            if (i === lines.length - 1 || this._getDepth(lines[i + 1], indentation, offset) < depth)
+                marker = endmark;
+
+            // Print the marker and the item
+            const hRepeat = indentation - marker.length - hgap;
+            TreeDecorator.insertAtPosition(pos, lines, i, i + 1, 
+                `${marker}${hline.repeat(hRepeat)}`);
         }
 
         return lines;
