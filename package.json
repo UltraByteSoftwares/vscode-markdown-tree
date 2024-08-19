@@ -27,7 +27,7 @@
       "properties": {
         "markdown-ultree.folders.ignore" : {
           "type": "string",
-          "default": ".*",
+          "default": "",
           "markdownDescription": "Files/folders to ignore based on patterns. Use semicolon to separate patterns e.g. `.git; node_modules;*test`."
         },
         "markdown-ultree.folders.indentation" : {
@@ -38,7 +38,7 @@
         "markdown-ultree.folders.branchlines" : {
           "type": "string",
           "default": "├─",
-          "enum": ["├─", "None"],
+          "enum": ["├─", "|-", "None"],
           "description": "Marker style for each item in the tree"
         },
         "markdown-ultree.folders.recursive" : {

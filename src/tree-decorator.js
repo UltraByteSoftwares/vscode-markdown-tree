@@ -16,7 +16,7 @@ class DepthStack {
      * 
      * @returns {number}
      */
-    length() {
+    size() {
         return this._top + 1;
     }
 
@@ -41,8 +41,9 @@ class DepthStack {
      * @param {number} index
      * @returns {number | null} 
      */
-    get(index) {
-        if (index > this._top)
+    get(index, beyondTop = false) {
+        const top = beyondTop ? this._stack.length - 1 : this._top;
+        if (index > top)
             return null;
 
         return this._stack[index];
@@ -160,36 +161,53 @@ class TreeDecorator {
         const dstack = new DepthStack();
         dstack.push(0);
 
+        /**
+         * 
+         * @param {string} marker 
+         * @param {number} d 
+         * @param {number} lineNum 
+         */
+        const applyMarker = (marker, d, lineNum) => {
+            const hRepeat = indentation - midmark.length - hgap;
+            TreeDecorator.insertAtPosition((d - 1) * indentation, lines, lineNum, lineNum + 1, 
+                `${marker}${hline.repeat(hRepeat)}`);
+        }
+
+        let depth = 0;
+        let prevTop = dstack.size();
+
         for (let i = 1; i < lines.length; ++i) {
             const line = lines[i];
 
-            const depth = this._getDepth(line, indentation, offset);
+            depth = this._getDepth(line, indentation, offset);
 
             // get the sibling if any
             const siblingLineNum = dstack.get(depth);
+
+            prevTop = dstack.size();
 
             // push itself makes sure the difference in depth is not greater than 1
             if (!dstack.push(i, depth))
                 throw new Error(`Error: Bad indentation at item number ${i + 1} of the tree.`);
 
-            const pos = (depth - 1) * indentation;
-
             if (siblingLineNum !== null) {
                 // If there was a previous sibling, print a vertical line to the current line
-                TreeDecorator.insertAtPosition(pos, lines, siblingLineNum + 1, i, vline);
+                TreeDecorator.insertAtPosition((depth - 1) * indentation, lines, siblingLineNum + 1, i, vline);
             }
 
-            let marker = midmark;
-            // Check if it is the last child, if yes, marker will be different
-            // This item in the current line is the last child if it is the very last item in the list
-            // or the depth of next line is less than the current one
-            if (i === lines.length - 1 || this._getDepth(lines[i + 1], indentation, offset) < depth)
-                marker = endmark;
+            applyMarker(midmark, depth, i);
 
-            // Print the marker and the item
-            const hRepeat = indentation - marker.length - hgap;
-            TreeDecorator.insertAtPosition(pos, lines, i, i + 1, 
-                `${marker}${hline.repeat(hRepeat)}`);
+            // Now change markers for leaf nodes if any. This is a loop for items in the dstack
+            // invalidated by the 'push' above
+            for (let d = dstack.size(); d < prevTop; ++d) {
+                applyMarker(endmark, d, dstack.get(d, true));
+            }
+        }
+
+        /* At the end whatever entries remain in the depth stack are leaf nodes
+        thus need to change their markers */
+        for (let d = 1; d < dstack.size(); ++d) {
+            applyMarker(endmark, d, dstack.get(d, true));
         }
 
         return lines;

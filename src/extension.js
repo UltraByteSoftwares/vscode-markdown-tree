@@ -16,7 +16,15 @@ async function printFolderTree(folderpath) {
 			const position = editor.selection.active;
             const offset = position.character;
 
-			const output = await dirPrinter.print(folderpath);
+            const config = vscode.workspace.getConfiguration('markdown-ultree');
+			const output = await dirPrinter.print(folderpath, {
+                ignore : config.get("folders.ignore"),
+                indentation : config.get("folders.indentation"),
+                branchLines : config.get("folders.branchlines"),
+                recursive : config.get("folders.recursive"),
+                maximumDepth : config.get("folders.maximumDepth"),
+                trailingSlash : config.get("folders.trailingSlash")
+            });
 			
             editor.edit(edit => {
                 edit.replace(position, output.join(`\n${' '.repeat(offset)}`));
@@ -41,14 +49,10 @@ async function printFolderTree(folderpath) {
  * @returns 
  */
 function activate(context) {
-    const config = vscode.workspace.getConfiguration('markdown-ultree');
-    
     // This command will come from r-click on explorer
     const generateFolderTreeFromSelection = 'ultree.generateFolderTreeFromSelection';
     context.subscriptions.push(vscode.commands.registerCommand(generateFolderTreeFromSelection, async (uri) => {
         await printFolderTree(uri.fsPath);
-        console.log(config);
-        console.log(config.get("folders.ignore"));
     }));
 
     // Command from command palette
