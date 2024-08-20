@@ -27,29 +27,29 @@ suite('Tree printer', () => {
         ];
 
         const ref = [
-            '    CHANGELOG.md',
-            '    LICENSE',
-            '    README.md',
-            '    jsconfig.json',
-            '    package-lock.json',
-            '    package.json',
-            '    res',
-            '        logo.png',
-            '    src',
-            '        directory-printer.js',
-            '        extension.js',
-            '        iterators.js',
-            '        tree-printer.js',
-            '    style',
-            '        branched.css',
-            '    test',
-            '        extension.test.js',
-            '    testing.mjs'
+            'CHANGELOG.md',
+            'LICENSE',
+            'README.md',
+            'jsconfig.json',
+            'package-lock.json',
+            'package.json',
+            'res/',
+            '    logo.png',
+            'src/',
+            '    directory-printer.js',
+            '    extension.js',
+            '    iterators.js',
+            '    tree-printer.js',
+            'style/',
+            '    branched.css',
+            'test/',
+            '    extension.test.js',
+            'testing.mjs'
         ]
 
         const printer = new FlatTreePrinter();
-        const output = printer.print(input, {offset: 4});
+        const output = printer.print(input);
 
-        assert.deepStrictEqual(ref, output);
+        assert.deepStrictEqual(output, ref);
     });
 });

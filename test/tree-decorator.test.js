@@ -46,6 +46,6 @@ suite('Tree decorator', () => {
         const dec = new TreeDecorator();
         const output = dec.decorate(input);
 
-        assert.deepStrictEqual(ref, output);
+        assert.deepStrictEqual(output, ref);
     });
 });
