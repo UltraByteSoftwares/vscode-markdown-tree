@@ -2,6 +2,7 @@ const FastGlobExplorer = require('./fastglob-explorer.js');
 const FlatTreePrinter = require('./flat-tree-printer.js');
 const TreeDecorator = require('./tree-decorator.js');
 const OptionsManager = require('./options-manager.js');
+const {statSync} = require('fs');
 
 class DirectoryPrinter {
     static s_instance = null;
@@ -47,6 +48,12 @@ class DirectoryPrinter {
      * @returns {string[]}
      */
     async print(folderpath, options = null) {
+        try {
+            statSync(folderpath).isDirectory();
+        } catch {
+            throw new Error(`Error: "${folderpath}" is not a directory (or is inaccessible)`);
+        }
+
         const {recursive, ignore, maxDepth, trailingSlash, indentation, branchLines, dot} =
             OptionsManager.copyOptions(this.getDefaultOptions(), options);
 

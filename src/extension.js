@@ -36,8 +36,6 @@ async function printFolderTree(folderpath) {
         if (err.message.search('Error:') !== -1) {
             await vscode.window.showErrorMessage(err.message);
         }
-
-        console.error(err);
     }
 }
 
@@ -60,7 +58,7 @@ function activate(context) {
     const generateFolderTree = 'ultree.generateFolderTree';
     context.subscriptions.push(vscode.commands.registerCommand(generateFolderTree, async () => {
         // ask for user input
-        const folderpath = await vscode.window.showInputBox();
+        const folderpath = await vscode.window.showInputBox({prompt: 'Enter the path to your directory'});
 
         // send the user input
         printFolderTree(folderpath)
