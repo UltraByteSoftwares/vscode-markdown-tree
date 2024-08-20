@@ -2,7 +2,7 @@
   "name": "markdown-tree",
   "displayName": "Markdown Tree",
   "description": "Generate collapsible trees in markdown",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "icon": "./res/logo.png",
   "publisher": "UltraByteSoftwares",
   "license": "MIT",
@@ -27,38 +27,41 @@
     "configuration": {
       "title": "Markdown ULTree",
       "properties": {
-        "markdown-ultree.folders.dot" : {
+        "markdown-ultree.folders.dot": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Show file names beginning with dot (.)."
         },
-        "markdown-ultree.folders.ignore" : {
+        "markdown-ultree.folders.ignore": {
           "type": "string",
           "default": "",
           "markdownDescription": "Files/folders to ignore based on patterns. Use semicolon to separate patterns e.g. `.git; node_modules;*test`."
         },
-        "markdown-ultree.folders.indentation" : {
+        "markdown-ultree.folders.indentation": {
           "type": "number",
           "default": 4,
           "description": "Indentation to depict each level in the directory. Will be considered 2 for values < 2."
         },
-        "markdown-ultree.folders.branchlines" : {
+        "markdown-ultree.folders.branchlines": {
           "type": "string",
           "default": "├─",
-          "enum": ["├─", "None"],
+          "enum": [
+            "├─",
+            "None"
+          ],
           "description": "Marker style for each item in the tree."
         },
-        "markdown-ultree.folders.recursive" : {
+        "markdown-ultree.folders.recursive": {
           "type": "boolean",
           "default": true,
           "description": "Scan directories recursively."
         },
-        "markdown-ultree.folders.maximumDepth" : {
+        "markdown-ultree.folders.maximumDepth": {
           "type": "number",
           "default": -1,
           "description": "Max depth/level of directories for recursive scan. Values < 0 means no limit."
         },
-        "markdown-ultree.folders.trailingSlash" : {
+        "markdown-ultree.folders.trailingSlash": {
           "type": "boolean",
           "default": false,
           "description": "Show trailing slashes (/) for folders."
