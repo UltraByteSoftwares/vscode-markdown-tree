@@ -33,13 +33,13 @@
         "markdown-ultree.folders.indentation" : {
           "type": "number",
           "default": 4,
-          "description": "Indentation to depict each level in the directory."
+          "description": "Indentation to depict each level in the directory. Will be considered 2 for values < 2."
         },
         "markdown-ultree.folders.branchlines" : {
           "type": "string",
           "default": "├─",
-          "enum": ["├─", "|-", "None"],
-          "description": "Marker style for each item in the tree"
+          "enum": ["├─", "None"],
+          "description": "Marker style for each item in the tree."
         },
         "markdown-ultree.folders.recursive" : {
           "type": "boolean",
@@ -49,7 +49,7 @@
         "markdown-ultree.folders.maximumDepth" : {
           "type": "number",
           "default": -1,
-          "description": "Max depth/level of directories for recursive scan. -1 means no limit."
+          "description": "Max depth/level of directories for recursive scan. Values < 0 means no limit."
         },
         "markdown-ultree.folders.trailingSlash" : {
           "type": "boolean",

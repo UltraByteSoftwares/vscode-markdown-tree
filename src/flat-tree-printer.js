@@ -25,13 +25,16 @@ class FlatTreePrinter {
      * An indented files/folder list is generated from the supplied flat files list.
      * The original files array is mutated and also returned
      * @param {string[]} files Array of strings must be sorted
-     * @param {{separator?: string, indentation?: number}} options
-     * @param {CallableFunction} formatter 
+     * @param {{separator?: string, indentation?: number}} options indentation cannot be < 2
+     * @param {CallableFunction} formatter custom formatter function
      * @returns {string[]} 
      */
     print(files, options = null, formatter = null) {
         const {separator, indentation} =
             OptionsManager.copyOptions(this.getDefaultOptions(), options);
+
+        if (indentation < 2)
+            throw new Error('Error: Indentation cannot be less than 2');
 
         let format = (item) => item;
         if (formatter)

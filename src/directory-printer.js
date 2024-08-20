@@ -59,13 +59,13 @@ class DirectoryPrinter {
 
         // Create indented list from the above flat list
         const indented = this._printer.print(files, {
-            indentation: indentation
+            indentation: indentation < 2 ? 2 : indentation
         });
 
         // Decorate them with branch lines
         // But, first this one requires some preprocessing of options
         const dopts = this._decorator.getDefaultOptions();
-        if (branchLines === '') {
+        if (branchLines === 'None') {
             Object.assign(dopts, {
                 endmark: '',
                 midmark: '',
@@ -73,14 +73,7 @@ class DirectoryPrinter {
                 vline: ''
             });
         }
-        else if (branchLines === '|-') {
-            Object.assign(dopts, {
-                endmark: '`',
-                midmark: '|',
-                hline: '-',
-                vline: '|'
-            });
-        }
+
         const list = this._decorator.decorate(indented, dopts);
 
         // Return the output

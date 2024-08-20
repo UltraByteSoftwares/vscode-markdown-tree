@@ -33,11 +33,10 @@ class FastGlobExplorer {
         const files = await fg.async(`${baseName}/${pattern}`, {
             cwd: path.dirname(folderpath),
             onlyFiles: false,
-            dot: true,
             baseNameMatch: true,
             // User configurable options
             ignore: ignore.split(';').map(s => s.trim()).filter(s => s !== ''),
-            deep: deep === -1 ? Infinity : deep,
+            deep: deep < 0 ? Infinity : deep,
             markDirectories: markDirectories
         });
 

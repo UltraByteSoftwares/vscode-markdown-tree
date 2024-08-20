@@ -22,7 +22,7 @@ async function printFolderTree(folderpath) {
                 indentation : config.get("folders.indentation"),
                 branchLines : config.get("folders.branchlines"),
                 recursive : config.get("folders.recursive"),
-                maximumDepth : config.get("folders.maximumDepth"),
+                maxDepth : config.get("folders.maximumDepth"),
                 trailingSlash : config.get("folders.trailingSlash")
             });
 			
