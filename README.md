@@ -12,7 +12,7 @@ This extension is available at [Visual Studio Code marketplace](https://marketpl
 
 ### Generate tree from any folder
 
-- Place your cursor wherever you want the output
+- Place your cursor anywhere you want the output (need not be only inside `ultree` block)
 - Click on `Ultree: Generate Directory Tree` in the file-explorer right-click menu
 
 ![markdown tree preview](./res/r-click.png)
