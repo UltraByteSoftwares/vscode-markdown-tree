@@ -82,7 +82,7 @@
     "commands": [
       {
         "command": "ultree.generateFolderTreeFromSelection",
-        "title": "Ultree: Generate Folder Tree"
+        "title": "Ultree: Generate Directory Tree"
       },
       {
         "command": "ultree.generateFolderTree",
