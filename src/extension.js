@@ -23,7 +23,8 @@ async function printFolderTree(folderpath) {
                 branchLines : config.get("folders.branchlines"),
                 recursive : config.get("folders.recursive"),
                 maxDepth : config.get("folders.maximumDepth"),
-                trailingSlash : config.get("folders.trailingSlash")
+                trailingSlash : config.get("folders.trailingSlash"),
+                dot: config.get("folders.dot")
             });
 			
             editor.edit(edit => {

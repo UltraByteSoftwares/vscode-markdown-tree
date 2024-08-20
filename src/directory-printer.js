@@ -35,7 +35,8 @@ class DirectoryPrinter {
             branchLines: '├─',
             recursive: true,
             maxDepth: -1,
-            trailingSlash: false
+            trailingSlash: false,
+            dot: false
         }
     }
 
@@ -46,7 +47,7 @@ class DirectoryPrinter {
      * @returns {string[]}
      */
     async print(folderpath, options = null) {
-        const {recursive, ignore, maxDepth, trailingSlash, indentation, branchLines} =
+        const {recursive, ignore, maxDepth, trailingSlash, indentation, branchLines, dot} =
             OptionsManager.copyOptions(this.getDefaultOptions(), options);
 
         // Get the files in a flat list
@@ -54,7 +55,8 @@ class DirectoryPrinter {
             recursive: recursive,
             ignore: ignore,
             deep: maxDepth,
-            markDirectories: trailingSlash
+            markDirectories: trailingSlash,
+            dot: dot
         });
 
         // Create indented list from the above flat list

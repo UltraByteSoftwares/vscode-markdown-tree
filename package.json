@@ -25,6 +25,11 @@
     "configuration": {
       "title": "Markdown ULTree",
       "properties": {
+        "markdown-ultree.folders.dot" : {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Show file names beginning with dot (.)."
+        },
         "markdown-ultree.folders.ignore" : {
           "type": "string",
           "default": "",

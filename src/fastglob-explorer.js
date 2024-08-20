@@ -11,7 +11,8 @@ class FastGlobExplorer {
             // Direct options
             ignore: "",     /* semi-colon separated values */
             deep: -1,
-            markDirectories: false
+            markDirectories: false,
+            dot: false
         }
     }
 
@@ -24,7 +25,7 @@ class FastGlobExplorer {
      * @returns {string[]} A flat list of files
      */
     async getFiles(folderpath, options = null) {
-        const {ignore, recursive, deep, markDirectories} = 
+        const {ignore, recursive, deep, markDirectories, dot} = 
             OptionsManager.copyOptions(this.getDefaultOptions(), options);
     
         const baseName = path.basename(folderpath);
@@ -35,6 +36,7 @@ class FastGlobExplorer {
             onlyFiles: false,
             baseNameMatch: true,
             // User configurable options
+            dot: dot,
             ignore: ignore.split(';').map(s => s.trim()).filter(s => s !== ''),
             deep: deep < 0 ? Infinity : deep,
             markDirectories: markDirectories
