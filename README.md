@@ -73,3 +73,5 @@ Generate trees from any folder via a right click option or through the command p
 Detailed changes in [CHANGELOG](./CHANGELOG.md)
 
 ### August 2024 (v1.0.1)
+
+Initial release
