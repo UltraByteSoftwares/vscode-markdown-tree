@@ -11,7 +11,9 @@
     "markdown",
     "ultree",
     "collapsible",
-    "expandable"
+    "expandable",
+    "details",
+    "summary"
   ],
   "engines": {
     "vscode": "^1.78.2"
