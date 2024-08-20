@@ -44,8 +44,8 @@ Here are the currently supported options
 
 ## Release Notes
 
-v1.0.0 has been released
+### August [Unreleased]
 
-### 1.0.0
+Generate trees from any folder via a right click option or through the command pallete.
 
-Initial release of markdown-tree extension
+Detailed changes in [CHANGELOG](./CHANGELOG.md)

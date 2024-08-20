@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+
+- Explorer right-click menu to generate tree from a directory
+- Added a command to generate tree from user supplied directory
+- Configuration options to customize the tree generated
+
 ## v1.0.0
 
 - Initial release
