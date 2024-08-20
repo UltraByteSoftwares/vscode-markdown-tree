@@ -1,6 +1,6 @@
 # Markdown Tree extension for Visual Studio Code
 
-Generate collapsible/expandable trees in markdown. 
+Generate collapsible/expandable trees from plain text or from any folder in markdown.
 
 The items are rendered inside `<details>` and `<summary>` HTML elements in the output.
 
@@ -10,7 +10,7 @@ This extension is available at [Visual Studio Code marketplace](https://marketpl
 
 ## Features
 
-### Generate trees from folders
+### Generate tree from any folder
 
 - Place your cursor wherever you want the output
 - Click on `Ultree: Generate Directory Tree` in the file-explorer right-click menu
@@ -54,10 +54,22 @@ Here are the currently supported options
 | **open**   | `true`          | (default) Keep foldable tree expanded at the start |
 |            | `false`         | Keep foldable tree collapsed at the start          |
 
+## Settings
+
+You can tinker a few settings like **ignoring some files and folders**, **control indentation** or **max depth of recursion** and a few more from the configurations page.
+
+Go to **File->Preferences->Settings** or hit `Ctrl+,` and search for `ultree` on the settings page.
+
+## Feedback
+
+Please drop your suggestions, bugs or feature requests at the project's [GitHub issues](https://github.com/UltraByteSoftwares/vscode-markdown-tree/issues) page.
+
 ## Release Notes
 
-### August 2024 [Unreleased]
+### August 2024 (v1.1.0)
 
 Generate trees from any folder via a right click option or through the command pallete.
 
 Detailed changes in [CHANGELOG](./CHANGELOG.md)
+
+### August 2024 (v1.0.1)
